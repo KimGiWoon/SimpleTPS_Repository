@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,8 +5,20 @@ namespace DesignPattern
 {
     public class ObservableProperty<T>
     {
-        [SerializeField] T _value;
-        public T Value { get { return _value; } set { if (value.Equals(value)) return; _value = value; Notify(); } }
+        [SerializeField] private T _value;
+        public T Value
+        {
+            get => _value;
+            set
+            {
+                if (_value.Equals(value))
+                {
+                    return;
+                }
+                _value = value;
+                Notify();
+            }
+        }
         private UnityEvent<T> _onValueChanged = new();
 
         public ObservableProperty(T value = default)
@@ -21,12 +31,12 @@ namespace DesignPattern
             _onValueChanged.AddListener(action);
         }
 
-        public void CancelSubscribe(UnityAction<T> action)
+        public void Cancelsubscribe(UnityAction<T> action)
         {
             _onValueChanged.RemoveListener(action);
         }
 
-        public void CancelsubscibeAll()
+        public void CancelsbscribeAll()
         {
             _onValueChanged.RemoveAllListeners();
         }
@@ -35,7 +45,5 @@ namespace DesignPattern
         {
             _onValueChanged?.Invoke(Value);
         }
-
     }
 }
-
