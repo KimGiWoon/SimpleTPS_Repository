@@ -6,44 +6,39 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Transform _avatar;
-    [SerializeField] Transform _aim;
+    [SerializeField] private Transform _avatar;
+    [SerializeField] private Transform _aim;
 
-    Rigidbody _playerRigid;
-    Playerstatus _playerStatus;
+    private Rigidbody _rigidbody;
+    private PlayerStatus _playerStatus;
 
     [Header("Mouse Config")]
-    [SerializeField][Range(-90, 0)] float _minPitch;    // 카메라 최소 각도
-    [SerializeField][Range(0, 90)] float _maxPitch;     // 카메라 최대 각도
-    [SerializeField][Range(0, 5)] float _mouseSensitivity = 1;
+    [SerializeField][Range(-90, 0)] private float _minPitch;
+    [SerializeField][Range(0, 90)] private float _maxPitch;
+    [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
+
+    private Vector2 _currentRotation;
 
     private void Awake()
     {
-        Initial();
+        Init();
     }
 
-    private void Update()
+    private void Init()
     {
-        SetMove(_playerStatus.WalkSpeed);
-        SetAimRotation();
-        SetBodyRotation();
-    }
-
-    private void Initial()
-    {
-        _playerRigid = GetComponent<Rigidbody>();
-        _playerStatus = GetComponent<Playerstatus>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     public Vector3 SetMove(float moveSpeed)
     {
         Vector3 moveDirection = GetMoveDirection();
-        Vector3 velocity = _playerRigid.velocity;
 
-        velocity.x = moveDirection.x * moveSpeed * Time.deltaTime;
-        velocity.z = moveDirection.z * moveSpeed * Time.deltaTime;
+        Vector3 velocity = _rigidbody.velocity;
+        velocity.x = moveDirection.x * moveSpeed;
+        velocity.z = moveDirection.z * moveSpeed;
 
-        _playerRigid.velocity = velocity;
+        _rigidbody.velocity = velocity;
 
         return moveDirection;
     }
@@ -52,57 +47,64 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 mouseDir = GetMouseDirection();
 
-        Vector2 currentRotation = new()     // 세로 축의 고정
-        {
-            x = transform.rotation.eulerAngles.x,
-            y = transform.rotation.eulerAngles.y
-        };
+        //  x축의 경우엔 제한 없음
+        _currentRotation.x += mouseDir.x;
 
-        currentRotation.x = mouseDir.x;     // x축의 경우는 제한을 걸 필요가 없음
-        currentRotation.y = Mathf.Clamp(currentRotation.y + mouseDir.y, _minPitch, _maxPitch);  // Clamp로 min, max 각도의 제한을 걸음
+        // y축의 경우엔 각도 제한
+        _currentRotation.y = Mathf.Clamp(
+            _currentRotation.y + mouseDir.y,
+            _minPitch,
+            _maxPitch
+            );
 
-        // 캐릭터 오브젝트의 Y축 회전만 반영
-        transform.rotation = Quaternion.Euler(0, currentRotation.x, 0);
+        // 캐릭터 오브젝트의 경우에는 Y축 회전만 반영
+        transform.rotation = Quaternion.Euler(0, _currentRotation.x, 0);
 
-        // 에임은 상화 회전 반영
+        // 에임의 경우 상하 회전 반영
         Vector3 currentEuler = _aim.localEulerAngles;
-        _aim.localEulerAngles = new Vector3(currentRotation.x, currentEuler.y, currentEuler.z);
+        _aim.localEulerAngles = new Vector3(_currentRotation.y, currentEuler.y, currentEuler.z);
 
-        // 회전 방향 벡터 전환
+        // 회전 방향 벡터 반환
         Vector3 rotateDirVector = transform.forward;
         rotateDirVector.y = 0;
         return rotateDirVector.normalized;
     }
 
-    public void SetBodyRotation()
+    public void SetAvatarRotation(Vector3 direction)
     {
+        if(direction == Vector3.zero)
+        {
+            return;
+        }
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        _avatar.rotation = Quaternion.Lerp(_avatar.rotation, targetRotation, _playerStatus.RotateSpeed * Time.deltaTime);
 
     }
 
-    public Vector3 GetMoveDirection()
-    {
-        Vector3 input = GetInputDirection();
-
-        Vector3 direction = (transform.right * input.x) + (transform.forward * input.z);
-
-        return direction.normalized;
-    }
-
-    // Player Move Input
-    public Vector3 GetInputDirection()
-    {
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-
-        return new Vector3(x, 0, z);
-    }
-
-    // Mouse move Input
     private Vector2 GetMouseDirection()
     {
         float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
         float mouseY = -Input.GetAxis("Mouse Y") * _mouseSensitivity;
 
         return new Vector2(mouseX, mouseY);
+    }
+
+    public Vector3 GetMoveDirection()
+    {
+        Vector3 input = GetInputDirection();
+
+        Vector3 direction =
+           (transform.right * input.x) +
+           (transform.forward * input.z);
+
+        return direction.normalized;
+    }
+
+    public Vector3 GetInputDirection()
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
+
+        return new Vector3(x, 0, z);
     }
 }

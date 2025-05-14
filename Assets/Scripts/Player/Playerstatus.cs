@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DesignPattern;
 using UnityEngine;
 
-public class Playerstatus : MonoBehaviour
+public class PlayerStatus : MonoBehaviour
 {
     [field: SerializeField]
     [field: Range(0, 10)]
