@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     PlayerStatus _status;
     PlayerMovement _movement;
+    Animator _animator;
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
 
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        UnsubscribeEvents();
+        CancelsubscribeEvents();
     }
 
     /// <summary>
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
+        _animator = GetComponent<Animator>();
     }
 
     private void HandlePlayerControl()
@@ -92,11 +95,18 @@ public class PlayerController : MonoBehaviour
     public void SubscribeEvents()
     {
         _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
+        _status.IsAiming.Subscribe(SetAimAnimation);
     }
 
-    public void UnsubscribeEvents()
+    public void CancelsubscribeEvents()
     {
         _status.IsAiming.Cancelsubscribe(_aimCamera.gameObject.SetActive);
+        _status.IsAiming.Cancelsubscribe(SetAimAnimation);
+    }
+
+    private void SetAimAnimation(bool value)
+    {
+        _animator.SetBool("IsAim", value);
     }
 }
 
