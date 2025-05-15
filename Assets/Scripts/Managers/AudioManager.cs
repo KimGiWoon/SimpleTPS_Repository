@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource _bgmSource;
+    AudioSource _bgmSource;
+    ObjectPool _sfxPool;
+
     [SerializeField] List<AudioClip> _bgmList = new();
     [SerializeField] SFXController _sfxPrefab;
-    ObjectPool _sfxPool;
 
     private void Awake()
     {
@@ -18,7 +19,7 @@ public class AudioManager : MonoBehaviour
     private void Init()
     {
         _bgmSource = GetComponent<AudioSource>();
-        _sfxPool = new ObjectPool(_sfxPrefab, 10);
+        _sfxPool = new ObjectPool(transform, _sfxPrefab, 10);
     }
 
     public void BgmPlay(int index)
