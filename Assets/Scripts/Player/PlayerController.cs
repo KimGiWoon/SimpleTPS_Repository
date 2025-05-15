@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
-        // _mainCamera = Camera.main.gameObject;
     }
 
     private void HandlePlayerControl()
