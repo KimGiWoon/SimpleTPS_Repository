@@ -85,6 +85,14 @@ public class PlayerController : MonoBehaviour
         }
 
         _movement.SetAvatarRotation(avatarDir);
+
+        // SetAnimation Parameter
+        if(_status.IsAiming.Value)
+        {
+            Vector3 input = _movement.GetInputDirection();
+            _animator.SetFloat("X", input.x);
+            _animator.SetFloat("Z", input.z);
+        }
     }
 
     private void HandleAiming()
@@ -94,12 +102,20 @@ public class PlayerController : MonoBehaviour
 
     public void SubscribeEvents()
     {
+        // IsMoving
+        _status.IsMoving.Subscribe(SetRunAnimation);
+
+        // IsAimiing
         _status.IsAiming.Subscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Subscribe(SetAimAnimation);
     }
 
     public void CancelsubscribeEvents()
     {
+        // IsMoving
+        _status.IsMoving.Subscribe(SetRunAnimation);
+
+        // IsAiming
         _status.IsAiming.Cancelsubscribe(_aimCamera.gameObject.SetActive);
         _status.IsAiming.Cancelsubscribe(SetAimAnimation);
     }
@@ -107,6 +123,11 @@ public class PlayerController : MonoBehaviour
     private void SetAimAnimation(bool value)
     {
         _animator.SetBool("IsAim", value);
+    }
+
+    private void SetRunAnimation(bool value)
+    {
+        _animator.SetBool("IsRun", value);
     }
 }
 
