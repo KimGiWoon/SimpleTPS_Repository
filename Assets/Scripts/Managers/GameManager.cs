@@ -12,6 +12,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Init()
     {
-
+        base.SingletonInit();
     }
 }
