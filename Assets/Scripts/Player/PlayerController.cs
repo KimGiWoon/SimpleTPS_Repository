@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] GunController _gunController;
+    [SerializeField] Animator _aimAnimator;
 
     [SerializeField] KeyCode _aimKey = KeyCode.Mouse1;
     [SerializeField] KeyCode _shootKey = KeyCode.Mouse0;
@@ -144,6 +145,7 @@ public class PlayerController : MonoBehaviour
     private void SetAimAnimation(bool value)
     {
         _animator.SetBool("IsAim", value);
+        _aimAnimator.SetBool("IsAim", value);
     }
 
     private void SetRunAnimation(bool value)
