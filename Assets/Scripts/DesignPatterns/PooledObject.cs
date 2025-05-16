@@ -16,7 +16,7 @@ namespace DesignPattern
 
         public void ReturnPool()
         {
-            ObjPool.PushPool(this);
+            ObjPool.ReturnPool(this);
         }
     }
 }

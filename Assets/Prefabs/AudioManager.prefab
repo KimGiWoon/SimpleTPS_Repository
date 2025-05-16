@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4916011474905637273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.44354126, y: -6.098334, z: 8.833933}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47,7 +47,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -141,3 +141,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80a30c1db037d4044afafcc7acf265fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bgmList: []
+  _sfxPrefab: {fileID: 1646338175011192241, guid: d02648cdf6d3f984eb57c9a46991e52a, type: 3}

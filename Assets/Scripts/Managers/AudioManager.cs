@@ -35,8 +35,8 @@ public class AudioManager : MonoBehaviour
     public SFXController GetSFX()
     {
         // Pool 에서 Pop하고 변환
-        // SFXController sfx = _sfxPool.PopPool() as SFXController; 도 가능
-        PooledObject poolObj = _sfxPool.PopPool();
+        // SFXController sfx = _sfxPool.GetPool() as SFXController; 도 가능
+        PooledObject poolObj = _sfxPool.GetPool();
         return poolObj as SFXController;    // SFX타입으로 변환하여 반환
     }
 }

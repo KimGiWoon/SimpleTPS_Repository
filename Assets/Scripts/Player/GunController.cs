@@ -5,20 +5,27 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-    [SerializeField] private LayerMask _targetLayer;
-    [SerializeField][Range(0, 100)] private float _attackRange;
-    [SerializeField] private int _shootDamage;
-    [SerializeField] private float _shootDelay;
-    [SerializeField] private AudioClip _shootSFX;
+    [SerializeField] LayerMask _targetLayer;
+    [SerializeField][Range(0, 100)] float _attackRange;
+    [SerializeField] int _shootDamage;
+    [SerializeField] float _shootDelay;
+    [SerializeField] AudioClip _shootSFX;
 
-    private CinemachineImpulseSource _impulse;
-    private Camera _camera;
+    CinemachineImpulseSource _impulse;
+    Camera _camera;
 
-    private bool _canShoot { get => _currentCount <= 0; }
-    private float _currentCount;
+    bool _canShoot { get => _currentCount <= 0; }
+    float _currentCount;
 
-    private void Awake() => Init();
-    private void Update() => HandleCanShoot();
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void Update()
+    {
+        HandleCanShoot();
+    } 
 
     private void Init()
     {
@@ -28,7 +35,10 @@ public class GunController : MonoBehaviour
 
     public bool Shoot()
     {
-        if (!_canShoot) return false;
+        if (!_canShoot)
+        {
+            return false;
+        }
 
         PlayShootSound();
         PlayCameraEffect();
@@ -37,9 +47,12 @@ public class GunController : MonoBehaviour
 
         // TODO : Ray 발사 -> 반환받은 대상에게 데미지 부여. 몬스터 구현시 같이 구현
         GameObject target = RayShoot();
-        if (target == null) return true;
+        if (target == null)
+        {
+            return true;
+        } 
 
-        Debug.Log($"총에 맞음 : {target.name}");
+        Debug.Log($"{target.name} 이/가 총에 맞음");
         //-------
 
         return true;
@@ -47,7 +60,10 @@ public class GunController : MonoBehaviour
 
     private void HandleCanShoot()
     {
-        if (_canShoot) return;
+        if (_canShoot)
+        {
+            return;
+        }
 
         _currentCount -= Time.deltaTime;
     }

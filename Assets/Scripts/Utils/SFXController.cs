@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SFXController : PooledObject
 {
-    private AudioSource _audioSource;
-    private float _currentCount;
+    AudioSource _audioSource;
+    float _currentCount;
 
     private void Awake()
     {

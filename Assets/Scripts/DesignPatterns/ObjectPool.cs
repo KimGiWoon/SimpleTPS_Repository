@@ -7,11 +7,14 @@ namespace DesignPattern
 {
     public class ObjectPool
     {
-        private Stack<PooledObject> _stack;
-        private PooledObject _targetPrefab;
-        private GameObject _poolObject;
+        Stack<PooledObject> _stack;
+        PooledObject _targetPrefab;
+        GameObject _poolObject;
 
-        public ObjectPool(Transform parent, PooledObject targetPrefab, int initSize = 5) => Init(parent, targetPrefab, initSize);
+        public ObjectPool(Transform parent, PooledObject targetPrefab, int initSize = 5)
+        {
+            Init(parent, targetPrefab, initSize);
+        }
 
         private void Init(Transform parent, PooledObject targetPrefab, int initSize)
         {
@@ -26,16 +29,19 @@ namespace DesignPattern
             }
         }
 
-        public PooledObject PopPool()
+        public PooledObject GetPool()
         {
-            if (_stack.Count == 0) CreatePooledObject();
+            if (_stack.Count == 0)
+            {
+                CreatePooledObject();
+            } 
 
             PooledObject pooledObject = _stack.Pop();
             pooledObject.gameObject.SetActive(true);
             return pooledObject;
         }
 
-        public void PushPool(PooledObject target)
+        public void ReturnPool(PooledObject target)
         {
             target.transform.parent = _poolObject.transform;
             target.gameObject.SetActive(false);
@@ -46,7 +52,7 @@ namespace DesignPattern
         {
             PooledObject obj = MonoBehaviour.Instantiate(_targetPrefab);
             obj.PooledInit(this);
-            PushPool(obj);
+            ReturnPool(obj);
         }
     }
 }
