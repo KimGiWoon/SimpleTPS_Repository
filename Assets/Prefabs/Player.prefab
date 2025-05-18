@@ -128,7 +128,7 @@ MonoBehaviour:
   <WalkSpeed>k__BackingField: 2
   <RunSpeed>k__BackingField: 4
   <RotateSpeed>k__BackingField: 10
-  <MaxHp>k__BackingField: 500
+  <MaxHp>k__BackingField: 100
 --- !u!114 &6883186987745379574
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEditor;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     bool IsControlActivate { get; set; } = true;
 
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
         _hpGuageUI.SetImageFillAmount(1);
         _status.CurrentHp.Value = _status.MaxHp;
+
     }
 
     private void HandlePlayerControl()
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleAiming();
         HandleShooting();
-
+       
     }
 
     private void HandleMovement()
@@ -111,6 +112,15 @@ public class PlayerController : MonoBehaviour
     private void HandleAiming()
     {
         _status.IsAiming.Value = Input.GetKey(_aimKey);
+        if(_status.IsAiming.Value)
+        {
+            _hpGuageUI.gameObject.SetActive(false);
+        }
+        else
+        {
+            _hpGuageUI.gameObject.SetActive(true);
+        }
+
     }
 
     // Player Take Damage
@@ -125,7 +135,7 @@ public class PlayerController : MonoBehaviour
     }
     
     // Player Health Recovery
-    public void RecoveryHp(int value)
+    public void RecoveryHp(int value)   // TODO : 아이템과의 상호작용 구현 예정
     {
         int hp = _status.CurrentHp.Value + value;
 
@@ -134,7 +144,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Player Die
-    public void PlayerDie()
+    public void PlayerDie()     // TODO : 플레이어 사망 구현 예정
     {
         Debug.Log("You Die");
         gameObject.SetActive(false);
