@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,10 +13,12 @@ public class PlayerController : MonoBehaviour
     PlayerStatus _status;
     PlayerMovement _movement;
     Animator _animator;
+    Image _image;
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] GunController _gunController;
     [SerializeField] Animator _aimAnimator;
+    [SerializeField] HpGuageUI _hpGuageUI;
 
     [SerializeField] KeyCode _aimKey = KeyCode.Mouse1;
     [SerializeField] KeyCode _shootKey = KeyCode.Mouse0;
@@ -47,6 +51,10 @@ public class PlayerController : MonoBehaviour
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
+        _image = _aimAnimator.GetComponent<Image>();
+
+        _hpGuageUI.SetImageFillAmount(1);
+        _status.CurrentHp.Value = _status.MaxHp;
     }
 
     private void HandlePlayerControl()
@@ -54,11 +62,12 @@ public class PlayerController : MonoBehaviour
         if (!IsControlActivate)
         {
             return;
-        } 
+        }
 
         HandleMovement();
         HandleAiming();
         HandleShooting();
+
     }
 
     private void HandleMovement()
@@ -91,7 +100,7 @@ public class PlayerController : MonoBehaviour
         _movement.SetAvatarRotation(avatarDir);
 
         // SetAnimation Parameter
-        if(_status.IsAiming.Value)
+        if (_status.IsAiming.Value)
         {
             Vector3 input = _movement.GetInputDirection();
             _animator.SetFloat("X", input.x);
@@ -103,6 +112,35 @@ public class PlayerController : MonoBehaviour
     {
         _status.IsAiming.Value = Input.GetKey(_aimKey);
     }
+
+    // Player Take Damage
+    public void TakeDamage(int value)
+    {
+        _status.CurrentHp.Value -= value;
+
+        if (_status.CurrentHp.Value <= 0)
+        {
+            PlayerDie();
+        } 
+    }
+    
+    // Player Health Recovery
+    public void RecoveryHp(int value)
+    {
+        int hp = _status.CurrentHp.Value + value;
+
+        // 회복된 체력의 최소 0, 최대 Max HP 세팅
+        _status.CurrentHp.Value = Mathf.Clamp(hp, 0, _status.MaxHp);
+    }
+
+    // Player Die
+    public void PlayerDie()
+    {
+        Debug.Log("You Die");
+        gameObject.SetActive(false);
+        // 게임 오버 씬 전환
+    }
+
 
     private void HandleShooting()
     {
@@ -118,6 +156,9 @@ public class PlayerController : MonoBehaviour
 
     public void SubscribeEvents()
     {
+        // Current HP
+        _status.CurrentHp.Subscribe(SetHpUIGuage);
+
         // IsMoving
         _status.IsMoving.Subscribe(SetRunAnimation);
 
@@ -131,8 +172,11 @@ public class PlayerController : MonoBehaviour
 
     public void CancelsubscribeEvents()
     {
+        // Current HP
+        _status.CurrentHp.Cancelsubscribe(SetHpUIGuage);
+
         // IsMoving
-        _status.IsMoving.Subscribe(SetRunAnimation);
+        _status.IsMoving.Cancelsubscribe(SetRunAnimation);
 
         // IsAiming
         _status.IsAiming.Cancelsubscribe(_aimCamera.gameObject.SetActive);
@@ -144,6 +188,10 @@ public class PlayerController : MonoBehaviour
 
     private void SetAimAnimation(bool value)
     {
+        if (!_image.enabled)
+        {
+            _image.enabled = true;
+        }
         _animator.SetBool("IsAim", value);
         _aimAnimator.SetBool("IsAim", value);
     }
@@ -157,6 +205,13 @@ public class PlayerController : MonoBehaviour
     {
         _animator.SetBool("IsAttack", value);
     }
+
+    private void SetHpUIGuage(int currentHp)
+    {
+        float hp = currentHp / (float)_status.MaxHp;
+        _hpGuageUI.SetImageFillAmount(hp);
+    }
+
 }
 
 
