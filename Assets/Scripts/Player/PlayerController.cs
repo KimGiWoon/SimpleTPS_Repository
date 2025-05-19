@@ -5,6 +5,7 @@ using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEditor;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     PlayerMovement _movement;
     Animator _animator;
     Image _image;
+    InputAction _aimInputAction;
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] GunController _gunController;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
         _image = _aimAnimator.GetComponent<Image>();
+        _aimInputAction = GetComponent<PlayerInput>().actions["Aim"];
 
         _hpGuageUI.SetImageFillAmount(1);
         _status.CurrentHp.Value = _status.MaxHp;
@@ -66,8 +69,8 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleMovement();
-        HandleAiming();
-        HandleShooting();
+        //HandleAiming();
+        //HandleShooting();
        
     }
 
@@ -100,18 +103,23 @@ public class PlayerController : MonoBehaviour
 
         _movement.SetAvatarRotation(avatarDir);
 
-        // SetAnimation Parameter
+        // Aim Mode 
         if (_status.IsAiming.Value)
         {
-            Vector3 input = _movement.GetInputDirection();
-            _animator.SetFloat("X", input.x);
-            _animator.SetFloat("Z", input.z);
+            //Vector3 input = _movement.GetInputDirection();
+            //_animator.SetFloat("X", input.x);
+            //_animator.SetFloat("Z", input.z);
+
+            _animator.SetFloat("X", _movement.InputDirection.x);
+            _animator.SetFloat("Z", _movement.InputDirection.y);
+
         }
     }
 
-    private void HandleAiming()
+    private void HandleAiming(InputAction.CallbackContext ctx)
     {
-        _status.IsAiming.Value = Input.GetKey(_aimKey);
+        // _status.IsAiming.Value = Input.GetKey(_aimKey);
+        _status.IsAiming.Value = ctx.started;
         if(_status.IsAiming.Value)
         {
             _hpGuageUI.gameObject.SetActive(false);
@@ -152,9 +160,11 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void HandleShooting()
+    //private void HandleShooting()
+    public void OnShoot()
     {
-        if (Input.GetKey(_shootKey) && _status.IsAiming.Value)
+        //if (Input.GetKey(_shootKey) && _status.IsAiming.Value)
+        if(_status.IsAiming.Value)
         {
             _status.IsAttacking.Value = _gunController.Shoot();
         }
@@ -178,6 +188,11 @@ public class PlayerController : MonoBehaviour
 
         // ISAttack
         _status.IsAttacking.Subscribe(SetAttackAnimation);
+
+        // Input
+        _aimInputAction.Enable();
+        _aimInputAction.started += HandleAiming;
+        _aimInputAction.canceled += HandleAiming;
     }
 
     public void CancelsubscribeEvents()
@@ -194,6 +209,11 @@ public class PlayerController : MonoBehaviour
 
         // IsAttack
         _status.IsAttacking.Cancelsubscribe(SetAttackAnimation);
+
+        // Input
+        _aimInputAction.Disable();
+        _aimInputAction.started -= HandleAiming;
+        _aimInputAction.canceled -= HandleAiming;
     }
 
     private void SetAimAnimation(bool value)

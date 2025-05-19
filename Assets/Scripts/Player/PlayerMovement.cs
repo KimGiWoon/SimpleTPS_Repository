@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField][Range(0, 5)] float _mouseSensitivity = 1;
 
     Vector2 _currentRotation;
+    public Vector2 InputDirection { get; private set; }
+    public Vector2 MouseDirection { get; private set; }
 
     private void Awake() => Init();
 
@@ -42,13 +44,13 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 SetAimRotation()
     {
-        Vector2 mouseDir = GetMouseDirection();
+        // Vector2 mouseDir = GetMouseDirection();
 
         //  x축의 경우라면 제한을 걸 필요 없음
-        _currentRotation.x += mouseDir.x;
+        _currentRotation.x += MouseDirection.x;
 
         // y축의 경우엔 각도 제한을 걸어야 함.
-        _currentRotation.y = Mathf.Clamp(_currentRotation.y + mouseDir.y, _minPitch, _maxPitch);
+        _currentRotation.y = Mathf.Clamp(_currentRotation.y + MouseDirection.y, _minPitch, _maxPitch);
 
         // 캐릭터 오브젝트의 경우에는 Y축 회전만 반영
         transform.rotation = Quaternion.Euler(0, _currentRotation.x, 0);
@@ -72,38 +74,43 @@ public class PlayerMovement : MonoBehaviour
         _avatar.rotation = Quaternion.Lerp(_avatar.rotation, targetRotation, _playerStatus.RotateSpeed * Time.deltaTime);
     }
 
-    private Vector2 GetMouseDirection()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
-        float mouseY = -Input.GetAxis("Mouse Y") * _mouseSensitivity;
-
-        return new Vector2(mouseX, mouseY);
-    }
-    
-    // 벡터 그림 (수업 후)
     public Vector3 GetMoveDirection()
     {
-        Vector3 input = GetInputDirection(); //InputDirection;
+        Vector2 input = InputDirection; //GetInputDirection(); 
 
-        Vector3 direction = (transform.right * input.x) + (transform.forward * input.z);
+        Vector3 direction = (transform.right * input.x) + (transform.forward * input.y);
 
         return direction.normalized;
     }
 
-    //public Vector2 InputDirection { get; private set; }
+    // Input System Setting
+    public void OnMove(InputValue value)
+    {
+        InputDirection = value.Get<Vector2>();
+    }
 
-    //public void OnMove(InputValue value)
+    public void OnRotate(InputValue value)
+    {
+        Vector2 mouseDir = value.Get<Vector2>();
+        mouseDir.y *= -1;
+        MouseDirection = (mouseDir * _mouseSensitivity).normalized;
+    }
+
+    //public Vector3 GetInputDirection()
     //{
-    //    Vector2 input = value.Get<Vector2>();
+    //    float x = Input.GetAxisRaw("Horizontal");
+    //    float z = Input.GetAxisRaw("Vertical");
+
+    //    return new Vector3(x, 0, z);
     //}
 
-    public Vector3 GetInputDirection()
-    {
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+    //private Vector2 GetMouseDirection()
+    //{
+    //    float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
+    //    float mouseY = -Input.GetAxis("Mouse Y") * _mouseSensitivity;
 
-        return new Vector3(x, 0, z);
-    }
+    //    return new Vector2(mouseX, mouseY);
+    //}
 }
 
 
