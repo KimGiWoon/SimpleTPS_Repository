@@ -828,24 +828,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c67ed6c086451b4db54ac4d24b626bb, type: 3}
---- !u!1 &1902719417 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3511983439086596308, guid: 5877a237560793440abc1279bfab4261, type: 3}
-  m_PrefabInstance: {fileID: 2042817338}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1902719420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902719417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6004c79f6b1de749aa7a2aae46cc3fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _component: {fileID: 916382442}
 --- !u!1001 &2042817338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -901,10 +883,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3511983439086596308, guid: 5877a237560793440abc1279bfab4261, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1902719420}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5877a237560793440abc1279bfab4261, type: 3}
 --- !u!1001 &7526422343776121009
 PrefabInstance:
@@ -994,6 +973,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 1.065
       objectReference: {fileID: 0}
+    - target: {fileID: 6883186987745379574, guid: cc6a488dcb0be594593f02d1885712c6, type: 3}
+      propertyPath: _mouseSensitivity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7071543099338878054, guid: cc6a488dcb0be594593f02d1885712c6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1038,6 +1021,10 @@ PrefabInstance:
       propertyPath: _attackRange
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7508247985840857768, guid: cc6a488dcb0be594593f02d1885712c6, type: 3}
+      propertyPath: _fireEffectPrefab
+      value: 
+      objectReference: {fileID: 4527820292300746118, guid: 1196ab57e846d1d4ba175411f0370c38, type: 3}
     - target: {fileID: 7508247985840857768, guid: cc6a488dcb0be594593f02d1885712c6, type: 3}
       propertyPath: _targetLayer.m_Bits
       value: 64

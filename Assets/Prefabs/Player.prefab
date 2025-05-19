@@ -145,7 +145,7 @@ MonoBehaviour:
   _aim: {fileID: 8859040076071087106}
   _minPitch: -30
   _maxPitch: 30
-  _mouseSensitivity: 1
+  _mouseSensitivity: 2
 --- !u!114 &8183771400430239563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,17 +770,33 @@ PrefabInstance:
       propertyPath: _shootSFX
       value: 
       objectReference: {fileID: 8300000, guid: 2b80422ce03e7694d93f9097533e69c1, type: 3}
+    - target: {fileID: 4831146447260701800, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
+      propertyPath: _attackRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4831146447260701800, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
+      propertyPath: _shootDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4831146447260701800, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
+      propertyPath: _fireEffectPrefab
+      value: 
+      objectReference: {fileID: 4527820292300746118, guid: 1196ab57e846d1d4ba175411f0370c38, type: 3}
+    - target: {fileID: 4831146447260701800, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
+      propertyPath: _targetLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 7184377607100724675, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.11816834
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7184377607100724675, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.192267
+      value: 1.656
       objectReference: {fileID: 0}
     - target: {fileID: 7184377607100724675, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2796922
+      value: 1.065
       objectReference: {fileID: 0}
     - target: {fileID: 7184377607100724675, guid: d0cf547b2b6e7124d9a85b3652b1c510, type: 3}
       propertyPath: m_LocalRotation.w

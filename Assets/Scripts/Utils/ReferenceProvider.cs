@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// GetComponent 우회 사용법
+
 [DisallowMultipleComponent]
 public class ReferenceProvider : MonoBehaviour
 {

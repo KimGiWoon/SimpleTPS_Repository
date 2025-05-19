@@ -10,7 +10,7 @@ public class NormalMonster : Monster, IDamagable
     bool _isActivateControl = true;
     bool _canTracking = true;
 
-    [SerializeField] int MaxHp;
+    [SerializeField] int monsterCurrentHp;
 
     ObservableProperty<int> CurrentHp;
     ObservableProperty<bool> IsMoving = new();  // 몬스터의 애니메이션이나 무빙 상태에 대해서 이벤트 적용 시 사용
@@ -61,6 +61,11 @@ public class NormalMonster : Monster, IDamagable
         
     }
 
+    private void MonsterDie()
+    {
+        Destroy(gameObject);
+    }
+
 
     public void TakeDamage(int value)
     {
@@ -68,5 +73,12 @@ public class NormalMonster : Monster, IDamagable
         // 체력 깎고
         // 체력이 0 이하가 되면 Dead 처리
         Debug.Log($"{gameObject.name} : {value} 데미지 받음");
+        monsterCurrentHp -= value;
+        Debug.Log($"몬스터 남은 체력 : {monsterCurrentHp}");
+        if(monsterCurrentHp <= 0)
+        {
+            MonsterDie();
+            Debug.Log("몬스터가 죽었습니다.");
+        }
     }
 }

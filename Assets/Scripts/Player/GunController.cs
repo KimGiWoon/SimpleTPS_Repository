@@ -10,6 +10,7 @@ public class GunController : MonoBehaviour
     [SerializeField] int _shootDamage;
     [SerializeField] float _shootDelay;
     [SerializeField] AudioClip _shootSFX;
+    [SerializeField] GameObject _fireEffectPrefab;
 
     CinemachineImpulseSource _impulse;
     Camera _camera;
@@ -45,7 +46,14 @@ public class GunController : MonoBehaviour
         PlayShootEffect();
         _currentCount = _shootDelay;
 
-        IDamagable target = RayShoot();
+        RaycastHit hit;
+        IDamagable target = RayShoot(out hit);
+
+        if (!hit.Equals(default))
+        {
+            PlayFireEffect(hit.point, Quaternion.LookRotation(hit.normal));
+        }
+
         if (target == null)
         {
             return true;
@@ -66,16 +74,26 @@ public class GunController : MonoBehaviour
         _currentCount -= Time.deltaTime;
     }
 
-    private IDamagable RayShoot()
+    private IDamagable RayShoot(out RaycastHit hitTarget)
     {
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, _attackRange, _targetLayer))
         {
+            hitTarget = hit;
             return ReferenceRegistry.GetProvider(hit.collider.gameObject).GetAs<NormalMonster>();
         }
+        else
+        {
+            hitTarget = default;
+        }
         return null;
+    }
+
+    private void PlayFireEffect(Vector3 position, Quaternion rotation)
+    {
+        Instantiate(_fireEffectPrefab, position, rotation);
     }
 
     private void PlayShootSound()
