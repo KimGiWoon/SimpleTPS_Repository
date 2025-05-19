@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEditor;
 
-public class PlayerController : MonoBehaviour, IDamagable
+public class PlayerController : MonoBehaviour
 {
     bool IsControlActivate { get; set; } = true;
 

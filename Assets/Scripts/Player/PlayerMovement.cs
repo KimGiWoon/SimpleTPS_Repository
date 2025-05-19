@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -82,12 +83,19 @@ public class PlayerMovement : MonoBehaviour
     // 벡터 그림 (수업 후)
     public Vector3 GetMoveDirection()
     {
-        Vector3 input = GetInputDirection();
+        Vector3 input = GetInputDirection(); //InputDirection;
 
         Vector3 direction = (transform.right * input.x) + (transform.forward * input.z);
 
         return direction.normalized;
     }
+
+    //public Vector2 InputDirection { get; private set; }
+
+    //public void OnMove(InputValue value)
+    //{
+    //    Vector2 input = value.Get<Vector2>();
+    //}
 
     public Vector3 GetInputDirection()
     {

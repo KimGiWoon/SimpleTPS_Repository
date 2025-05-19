@@ -67,5 +67,6 @@ public class NormalMonster : Monster, IDamagable
         // 데미지 판정 구현
         // 체력 깎고
         // 체력이 0 이하가 되면 Dead 처리
+        Debug.Log($"{gameObject.name} : {value} 데미지 받음");
     }
 }

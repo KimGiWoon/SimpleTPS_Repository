@@ -3,29 +3,23 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class GunController : MonoBehaviour
+
+public class Gun : MonoBehaviour
 {
-    [SerializeField] LayerMask _targetLayer;
-    [SerializeField][Range(0, 100)] float _attackRange;
-    [SerializeField] int _shootDamage;
-    [SerializeField] float _shootDelay;
-    [SerializeField] AudioClip _shootSFX;
+    [SerializeField] private LayerMask _targetLayer;
+    [SerializeField][Range(0, 100)] private float _attackRange;
+    [SerializeField] private int _shootDamage;
+    [SerializeField] private float _shootDelay;
+    [SerializeField] private AudioClip _shootSFX;
 
-    CinemachineImpulseSource _impulse;
-    Camera _camera;
+    private CinemachineImpulseSource _impulse;
+    private Camera _camera;
 
-    bool _canShoot { get => _currentCount <= 0; }
-    float _currentCount;
+    private bool _canShoot { get => _currentCount <= 0; }
+    private float _currentCount;
 
-    private void Awake()
-    {
-        Init();
-    }
-
-    private void Update()
-    {
-        HandleCanShoot();
-    } 
+    private void Awake() => Init();
+    private void Update() => HandleCanShoot();
 
     private void Init()
     {
@@ -35,10 +29,7 @@ public class GunController : MonoBehaviour
 
     public bool Shoot()
     {
-        if (!_canShoot)
-        {
-            return false;
-        }
+        if (!_canShoot) return false;
 
         PlayShootSound();
         PlayCameraEffect();
@@ -46,10 +37,7 @@ public class GunController : MonoBehaviour
         _currentCount = _shootDelay;
 
         IDamagable target = RayShoot();
-        if (target == null)
-        {
-            return true;
-        }
+        if (target == null) return true;
 
         target.TakeDamage(_shootDamage);
 
@@ -58,10 +46,7 @@ public class GunController : MonoBehaviour
 
     private void HandleCanShoot()
     {
-        if (_canShoot)
-        {
-            return;
-        }
+        if (_canShoot) return;
 
         _currentCount -= Time.deltaTime;
     }
@@ -73,8 +58,10 @@ public class GunController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, _attackRange, _targetLayer))
         {
-            return ReferenceRegistry.GetProvider(hit.collider.gameObject).GetAs<NormalMonster>();
+            //??? ì´ ë¶€ë¶„ì„..? ì–´ë–»ê²Œ ìš°íšŒí•´ì•¼ í•˜ì§€...?
+            return hit.transform.GetComponent<IDamagable>();
         }
+
         return null;
     }
 
@@ -91,7 +78,6 @@ public class GunController : MonoBehaviour
 
     private void PlayShootEffect()
     {
-        // TODO: ÃÑ±¸ È­¿° È¿°ú. ÆÄÆ¼Å¬·Î ±¸ÇöÇØº¸±â±â
+        // TODO: ì´êµ¬ í™”ì—¼ íš¨ê³¼. íŒŒí‹°í´ë¡œ êµ¬í˜„í•´ë³´ê¸°ê¸°
     }
-
 }
