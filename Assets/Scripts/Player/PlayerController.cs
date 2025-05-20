@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     Animator _animator;
     Image _image;
     InputAction _aimInputAction;
+    InputAction _shootInputAction;
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] GunController _gunController;
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _image = _aimAnimator.GetComponent<Image>();
         _aimInputAction = GetComponent<PlayerInput>().actions["Aim"];
+        _shootInputAction = GetComponent<PlayerInput>().actions["Shoot"];
 
         _hpGuageUI.SetImageFillAmount(1);
         _status.CurrentHp.Value = _status.MaxHp;
@@ -70,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
         HandleMovement();
         //HandleAiming();
-        //HandleShooting();
+        HandleShooting();
        
     }
 
@@ -159,12 +161,12 @@ public class PlayerController : MonoBehaviour
         // 게임 오버 씬 전환
     }
 
-
-    //private void HandleShooting()
-    public void OnShoot()
+    //public void OnShoot()
+    private void HandleShooting()
     {
         //if (Input.GetKey(_shootKey) && _status.IsAiming.Value)
-        if(_status.IsAiming.Value)
+        //if(_status.IsAiming.Value)
+        if(_status.IsAiming.Value && _shootInputAction.IsPressed())
         {
             _status.IsAttacking.Value = _gunController.Shoot();
         }
