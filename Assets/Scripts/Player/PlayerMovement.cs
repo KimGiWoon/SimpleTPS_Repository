@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 mouseDir = value.Get<Vector2>();
         mouseDir.y *= -1;
-        MouseDirection = (mouseDir * _mouseSensitivity).normalized;
+        MouseDirection = mouseDir * _mouseSensitivity;
     }
 
     //public Vector3 GetInputDirection()

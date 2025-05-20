@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     Image _image;
     InputAction _aimInputAction;
     InputAction _shootInputAction;
+    Inventory _inventory;
 
     [SerializeField] CinemachineVirtualCamera _aimCamera;
     [SerializeField] GunController _gunController;
@@ -39,6 +41,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandlePlayerControl();
+        ItemUse();
+        
     }
 
     private void OnDisable()
@@ -55,6 +59,7 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<PlayerMovement>();
         _animator = GetComponent<Animator>();
         _image = _aimAnimator.GetComponent<Image>();
+        _inventory = GetComponent<Inventory>();
         _aimInputAction = GetComponent<PlayerInput>().actions["Aim"];
         _shootInputAction = GetComponent<PlayerInput>().actions["Shoot"];
 
@@ -137,6 +142,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int value)
     {
         _status.CurrentHp.Value -= value;
+        Debug.Log($"플레이어가 {value} 데미지 받음");
 
         if (_status.CurrentHp.Value <= 0)
         {
@@ -148,9 +154,27 @@ public class PlayerController : MonoBehaviour
     public void RecoveryHp(int value)   // TODO : 아이템과의 상호작용 구현 예정
     {
         int hp = _status.CurrentHp.Value + value;
+        Debug.Log($"플레이어의 체력이 {value} 회복 되었습니다.");
 
         // 회복된 체력의 최소 0, 최대 Max HP 세팅
         _status.CurrentHp.Value = Mathf.Clamp(hp, 0, _status.MaxHp);
+    }
+
+    // Player collider Item
+    private void OnTriggerEnter(Collider other)
+    {
+        // 충돌한게 아이템이 맞는지 체크 (필수)
+        _inventory.GetItem(other.GetComponent<ItemObject>().data);
+        other.gameObject.SetActive(false);
+    }
+
+    // Player Item Use
+    private void ItemUse()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _inventory.UseItem(0);
+        }
     }
 
     // Player Die

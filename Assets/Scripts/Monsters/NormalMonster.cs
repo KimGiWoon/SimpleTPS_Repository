@@ -11,6 +11,7 @@ public class NormalMonster : Monster, IDamagable
     bool _canTracking = true;
 
     [SerializeField] int monsterCurrentHp;
+    [SerializeField] int monsterDamage;
 
     ObservableProperty<int> CurrentHp;
     ObservableProperty<bool> IsMoving = new();  // 몬스터의 애니메이션이나 무빙 상태에 대해서 이벤트 적용 시 사용
@@ -66,6 +67,14 @@ public class NormalMonster : Monster, IDamagable
         Destroy(gameObject);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.gameObject.tag == "Player")
+        {
+            PlayerController player = collision.collider.gameObject.GetComponent<PlayerController>();
+            player.TakeDamage(monsterDamage);
+        }
+    }
 
     public void TakeDamage(int value)
     {

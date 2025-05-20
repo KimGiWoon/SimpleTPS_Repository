@@ -3,16 +3,22 @@ using CustomUtility.IO;
 
 public class PlayerSaveDataExample : SaveData
 {
+    [field: SerializeField] public string Name { get; set; }
     [field: SerializeField] public int Hp { get; set; }
+    [field: SerializeField] public int Damage { get; set; }
+    
 
     public PlayerSaveDataExample()
     {
     }
 
-    public PlayerSaveDataExample(int hp)
+    public PlayerSaveDataExample(string name, int hp, int damage)
     {
+        Name = name;
         Hp = hp;
+        Damage = damage;
     }
+
 }
 
 public class SaveTestSample : MonoBehaviour
@@ -24,31 +30,34 @@ public class SaveTestSample : MonoBehaviour
 
     private void Start()
     {
+        //LoadJson();
         SaveJson();
         LoadJson();
         
-        SaveBinary();
-        LoadBinary();
+        //SaveBinary();
+        //LoadBinary();
     }
 
     private void SaveJson()
     {
-        _jsonSave = new(55);
+        _jsonSave = new("뇸뇸이", 500, 20);
         
         DataSaveController.Save(_jsonSave, SaveType.JSON);
     }
 
     private void LoadJson()
     {
-        _jsonLoad = new(0);
-        
+        _jsonLoad = new("", 0, 0);
+
         DataSaveController.Load(ref _jsonLoad, SaveType.JSON);
+        Debug.Log(_jsonLoad.Name);
         Debug.Log(_jsonLoad.Hp);
+        Debug.Log(_jsonLoad.Damage);
     }
 
     private void SaveBinary()
     {
-        _jsonSave = new(76);
+        _jsonSave = new("용용이", 100, 20);
         _jsonSave.Hp = 76;
 
         DataSaveController.Save(_jsonSave, SaveType.BINARY);
@@ -56,7 +65,7 @@ public class SaveTestSample : MonoBehaviour
 
     private void LoadBinary()
     {
-        _jsonLoad = new(0);
+        _jsonLoad = new("", 0, 0);
 
         DataSaveController.Load(ref _jsonLoad, SaveType.BINARY);
         Debug.Log(_jsonLoad.Hp);
