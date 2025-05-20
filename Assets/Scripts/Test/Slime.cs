@@ -23,12 +23,12 @@ public class Slime : MonoBehaviour
 
     private void Init(int number)
     {
-        Debug.Log(Data.MonsterCSV.GetData(number, (int)DataMonster.Name));
+        Debug.Log(Data.MonsterCSV.GetData(number, (int)MonsterData.Name));
 
-        _name = Data.MonsterCSV.GetData(number, (int)DataMonster.Name);
-        _atk = int.Parse(Data.MonsterCSV.GetData(number, (int)DataMonster.Atk));
-        _dfe = int.Parse(Data.MonsterCSV.GetData(number, (int)DataMonster.Dfe));
-        _spd = int.Parse(Data.MonsterCSV.GetData(number, (int)DataMonster.Spd));
-        _dsc = Data.MonsterCSV.GetData(number, (int)DataMonster.Dsc);
+        _name = Data.MonsterCSV.GetData(number, (int)MonsterData.Name);
+        _atk = int.Parse(Data.MonsterCSV.GetData(number, (int)MonsterData.Atk));
+        _dfe = int.Parse(Data.MonsterCSV.GetData(number, (int)MonsterData.Dfe));
+        _spd = int.Parse(Data.MonsterCSV.GetData(number, (int)MonsterData.Spd));
+        _dsc = Data.MonsterCSV.GetData(number, (int)MonsterData.Dsc);
     }
 }

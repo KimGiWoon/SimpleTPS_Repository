@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class ItemData : ScriptableObject
 {
     public string name;
-    [TextArea] public string Description;
+    [TextArea] public string description;   // 여러줄의 텍스트 입력 가능
     public Sprite icon;
     public GameObject itemPrefab;
 

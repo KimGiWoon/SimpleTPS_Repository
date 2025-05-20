@@ -164,8 +164,12 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 충돌한게 아이템이 맞는지 체크 (필수)
-        _inventory.GetItem(other.GetComponent<ItemObject>().data);
-        other.gameObject.SetActive(false);
+        if(other.gameObject.layer == 7)
+        {
+            _inventory.GetItem(other.GetComponent<ItemObject>().data);
+            other.gameObject.SetActive(false);
+        }
+        
     }
 
     // Player Item Use

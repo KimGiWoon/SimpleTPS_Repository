@@ -71,7 +71,7 @@ public class NormalMonster : Monster, IDamagable
     {
         if(collision.collider.gameObject.tag == "Player")
         {
-            PlayerController player = collision.collider.gameObject.GetComponent<PlayerController>();
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
             player.TakeDamage(monsterDamage);
         }
     }
@@ -81,7 +81,7 @@ public class NormalMonster : Monster, IDamagable
         // 데미지 판정 구현
         // 체력 깎고
         // 체력이 0 이하가 되면 Dead 처리
-        Debug.Log($"{gameObject.name} : {value} 데미지 받음");
+        Debug.Log($"몬스터가 {value} 데미지 받음");
         monsterCurrentHp -= value;
         Debug.Log($"몬스터 남은 체력 : {monsterCurrentHp}");
         if(monsterCurrentHp <= 0)

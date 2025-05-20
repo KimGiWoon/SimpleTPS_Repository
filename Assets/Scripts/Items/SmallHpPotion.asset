@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmallHpPotion
   m_EditorClassIdentifier: 
   name: "\uC791\uC740 \uCCB4\uB825 \uD3EC\uC158"
-  Description: "\uC791\uC740 \uCCB4\uB825 \uD3EC\uC158\uC785\uB2C8\uB2E4."
+  description: "10\uC758 \uCCB4\uB825\uC744 \uD68C\uBCF5\uC2DC\uD0AC \uC218 \uC788\uB2E4."
   icon: {fileID: 0}
   itemPrefab: {fileID: 3455183449219877741, guid: b2df9c6d924ac404399fec33d9afea44, type: 3}
   Value: 10

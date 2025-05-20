@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
     }
 }
 
-public enum DataMonster
+public enum MonsterData
 {
     Name = 1, Atk, Dfe, Spd, Dsc
 }

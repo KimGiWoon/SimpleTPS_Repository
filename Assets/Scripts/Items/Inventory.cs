@@ -24,6 +24,11 @@ public class Inventory : MonoBehaviour
 
     public void UseItem(int index)
     {
+        if (_slots.Count == 0)
+        {
+            Debug.Log("인벤토리가 비어있습니다.");
+            return;
+        }
         _slots[index].Use(_controller);
         _slots[index] = null;
         _slots.RemoveAt(index);
