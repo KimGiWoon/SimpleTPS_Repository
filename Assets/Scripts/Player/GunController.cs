@@ -79,10 +79,13 @@ public class GunController : MonoBehaviour
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _attackRange, _targetLayer))
+        if (Physics.Raycast(ray, out hit, _attackRange))
         {
             hitTarget = hit;
-            return ReferenceRegistry.GetProvider(hit.collider.gameObject).GetAs<NormalMonster>();
+            if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                return ReferenceRegistry.GetProvider(hit.collider.gameObject).GetAs<NormalMonster>();
+            }
         }
         else
         {
